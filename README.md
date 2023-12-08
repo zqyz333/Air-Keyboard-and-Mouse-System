@@ -36,7 +36,7 @@
     KinectBody.cpp
 
 ## **程序运行方法**：
-需安装Kinect SKD 2.0(https://www.microsoft.com/en-us/download/details.aspx?id=44561)，连接kinect2.0，开始运行程序，人物站在摄像机的拍摄范围内就可以使用，注意尽量只有一个人，减少干扰，鼠标控制范围是摄像机的右上1/4个屏幕。
+需安装[Kinect SKD 2.0](https://www.microsoft.com/en-us/download/details.aspx?id=44561)，连接kinect2.0，开始运行程序，人物站在摄像机的拍摄范围内就可以使用，注意尽量只有一个人，减少干扰，鼠标控制范围是摄像机的右上1/4个屏幕。
 
 ## **使用方法**：
 1、左手握拳从左肩下挥至左肩上，启动空气鼠标控制：右手握拳模拟鼠标右键点击一下，右手张开表示松开点击键（若要快速双击则需快速握拳张开两次）
