@@ -1,0 +1,50 @@
+﻿生成启动时间为 2023/5/18 18:08:54。
+     1>项目“F:\智能机器人课设\2048\KinectGesture\KinectDemo\KinectDemo.vcxproj”在节点 2 上(Build 个目标)。
+     1>ClCompile:
+         F:\Visual studio 2012\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yc"stdafx.h" /Fp"Debug\KinectGesture.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt stdafx.cpp
+         stdafx.cpp
+         F:\Visual studio 2012\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /sdl /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"stdafx.h" /Fp"Debug\KinectGesture.pch" /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt BodyRenderer.cpp Gesture.cpp GestureDetection.cpp GestureWrapper.cpp ImageRenderer.cpp KinectBody.cpp KinectDemo.cpp KinectDevice.cpp SwipeDownGesture.cpp SwipeLeftGesture.cpp SwipeRightGesture.cpp SwipeUpGesture.cpp
+         SwipeUpGesture.cpp
+         SwipeRightGesture.cpp
+         SwipeLeftGesture.cpp
+         SwipeDownGesture.cpp
+         KinectDevice.cpp
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\kinectdevice.cpp(302): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\kinectdevice.cpp(303): warning C4244: “=”: 从“int”转换到“float”，可能丢失数据
+         KinectDemo.cpp
+         KinectBody.cpp
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\kinectbody.cpp(119): warning C4101: “wmId”: 未引用的局部变量
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\kinectbody.cpp(119): warning C4101: “wmEvent”: 未引用的局部变量
+         ImageRenderer.cpp
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\imagerenderer.cpp(109): warning C4244: “=”: 从“int”转换到“FLOAT”，可能丢失数据
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\imagerenderer.cpp(110): warning C4244: “=”: 从“int”转换到“FLOAT”，可能丢失数据
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\imagerenderer.cpp(111): warning C4244: “=”: 从“int”转换到“FLOAT”，可能丢失数据
+     1>f:\智能机器人课设\2048\kinectgesture\kinectdemo\imagerenderer.cpp(112): warning C4244: “=”: 从“int”转换到“FLOAT”，可能丢失数据
+         GestureWrapper.cpp
+         GestureDetection.cpp
+         Gesture.cpp
+         BodyRenderer.cpp
+         正在生成代码...
+       ResourceCompile:
+         C:\Program Files (x86)\Windows Kits\8.0\bin\x86\rc.exe /D _UNICODE /D UNICODE /l"0x0409" /nologo /fo"Debug\KinectDemo.res" KinectDemo.rc 
+       Link:
+         F:\Visual studio 2012\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"F:\智能机器人课设\2048\KinectGesture\Debug\KinectGesture.exe" /INCREMENTAL /NOLOGO kinect20.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"F:\智能机器人课设\2048\KinectGesture\Debug\KinectGesture.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:\智能机器人课设\2048\KinectGesture\Debug\KinectGesture.lib" /MACHINE:X86 Debug\KinectDemo.res
+         Debug\BodyRenderer.obj
+         Debug\Gesture.obj
+         Debug\GestureDetection.obj
+         Debug\GestureWrapper.obj
+         Debug\ImageRenderer.obj
+         Debug\KinectBody.obj
+         Debug\KinectDemo.obj
+         Debug\KinectDevice.obj
+         Debug\stdafx.obj
+         Debug\SwipeDownGesture.obj
+         Debug\SwipeLeftGesture.obj
+         Debug\SwipeRightGesture.obj
+         Debug\SwipeUpGesture.obj
+         KinectDemo.vcxproj -> F:\智能机器人课设\2048\KinectGesture\Debug\KinectGesture.exe
+     1>已完成生成项目“F:\智能机器人课设\2048\KinectGesture\KinectDemo\KinectDemo.vcxproj”(Build 个目标)的操作。
+
+生成成功。
+
+已用时间 00:00:03.06
