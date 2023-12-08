@@ -1,0 +1,9 @@
+KinectGesture_air[[:space:]]mouse[[:space:]]and[[:space:]]keyboard filter=lfs diff=lfs merge=lfs -text
+KinectGesture_air[[:space:]]mouse[[:space:]]and[[:space:]]keyboard_English filter=lfs diff=lfs merge=lfs -text
+README_English.txt filter=lfs diff=lfs merge=lfs -text
+air.png filter=lfs diff=lfs merge=lfs -text
+KinectGesture_WASD filter=lfs diff=lfs merge=lfs -text
+README.md filter=lfs diff=lfs merge=lfs -text
+README.txt filter=lfs diff=lfs merge=lfs -text
+README_English.md filter=lfs diff=lfs merge=lfs -text
+Using[[:space:]]air[[:space:]]mouse[[:space:]]to[[:space:]]write[[:space:]]“air”.mp4 filter=lfs diff=lfs merge=lfs -text
