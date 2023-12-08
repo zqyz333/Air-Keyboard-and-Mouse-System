@@ -3,12 +3,12 @@
 
 #include <Eigen/Dense>
 
-// ÉùÃ÷¿¨¶ûÂüÂË²¨Æ÷º¯Êı
+// Declare the Kalman filter function
 void initializeKalmanFilter();
 void kalmanFilterPredict();
 void kalmanFilterUpdate(const Eigen::MatrixXf& measurement);
 
-// ÉùÃ÷¿¨¶ûÂüÂË²¨Æ÷×´Ì¬±äÁ¿
+// Declare Kalman filter state variables
 extern Eigen::MatrixXf x;
 extern Eigen::MatrixXf P;
 extern Eigen::MatrixXf F;

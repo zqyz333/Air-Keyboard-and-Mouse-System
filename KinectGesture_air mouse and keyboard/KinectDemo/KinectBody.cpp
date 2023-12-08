@@ -156,7 +156,7 @@ LRESULT CALLBACK KinectBody::DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPA
         {
             mHwnd = hWnd;
             hGlobalHwnd = hWnd;
-            // 配置
+            // Configuration
             mKinectConfig.bAcquireColor = false;
             mKinectConfig.bAcquireDepth = false;
             mKinectConfig.bAcquireBody = true;
@@ -165,19 +165,19 @@ LRESULT CALLBACK KinectBody::DlgProc(HWND hWnd, UINT message, WPARAM wParam, LPA
             mKinectConfig.hWndForBody = GetDlgItem(hWnd, IDC_BODY);
             mKinectConfig.BodyFrameCallback = HandleBodyFrame;
 
-            // 初始化手势识别
+            // Initialize Gestures Recognition
             pGestureDetection = new GestureDetection();
             pGestureDetection->fGestureRecongnized = OnGestureRecognized;
-            pGestureDetection->AddGesture(GestureType::SwipeRight);//添加识别手势类型
+            pGestureDetection->AddGesture(GestureType::SwipeRight);
             pGestureDetection->AddGesture(GestureType::SwipeLeft);
-			pGestureDetection->AddGesture(GestureType::SwipeUp);
-			pGestureDetection->AddGesture(GestureType::SwipeDown);
+			pGestureDetection->AddGesture(GestureType::SwipeUp);//Added recognition gesture types
+			pGestureDetection->AddGesture(GestureType::SwipeDown);//Added recognition gesture types
 
             pKinectDevice = new KinectDevice(&mKinectConfig);
             HRESULT hr = pKinectDevice->Open();
             if (FAILED(hr))
             {
-                MessageBox(hWnd, L"初始化失败。", L"提示", MB_OK);
+                MessageBox(hWnd, L"Initialization Failed。", L"tip", MB_OK);
             }
         }
         break;
@@ -203,11 +203,11 @@ void KinectBody::Update()
 
 void HandleBodyFrame(IBody** ppBodies, int bodyCount)
 {
-    // TODO:处理骨骼帧数据
+    // TODO:Processing bone frame data
 
     IBody* pBody = NULL;
     float distance = -1;
-    // 寻找离镜头最近的人体
+    // Searching for the closest human body to the camera
     for (int i = 0; i < bodyCount; i ++)
     {
         IBody* tmpBody = ppBodies[i];
@@ -235,13 +235,13 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
                     pBody = tmpBody;
                 }
 
-				//左手是否在左肩的左上方
+				// Determine if the left hand is above(and left) the left shoulder
 
 				if (joints[6].Position.X<joints[4].Position.X && joints[6].Position.Y>joints[4].Position.Y){lf_flag1=1;}
 				else {lf_flag1=0;}
 
 				if (lf_flag && lf_flag1){
-					//手部
+					// loading hand coordinates
 					xx = joints[10].Position.X;
 					yy = joints[10].Position.Y;
 					zz = joints[10].Position.Z;
@@ -249,27 +249,27 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
 					absy = (int)((1080/2*2 - 160*(yy)/zz*0.004/0.0002509)/1080*65536);*/
 					//mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, absx, absy, 0, 0 );
 
-					//卡尔曼滤波
+					// Coordinate Transformation: Image coordinate->Camera coordinate system->Linear camera model
 					absx = (int)((1920/2*0 + 500*(xx)/zz*0.004/0.0001891)/1920*65536);
 					absy = (int)((1080/2*2.8 - 500*(yy)/zz*0.004/0.0002204)/1080*65536);
 
 
-					// 初始化卡尔曼滤波器
+					// Initialize Kalman filter
 					if (kalman_flag==0){
 							initializeKalmanFilter();
 							kalman_flag = 1;
 							
 					}
 					//if(ten++>=1){
-					//// 输入测量值
+					//// load Measurement value to vector
 					//MatrixXf measurement(2, 1);
 					//measurement << (float)absx, (float)absy;
 
-					//// 运行卡尔曼滤波器
+					//// run Kalman filter
 					//kalmanFilterPredict();
 					//kalmanFilterUpdate(measurement);
 
-					//// 输出滤波结果
+					//// ouput Kalman filter result
 					//mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, (int)x(0), (int)x(1), 0, 0 );
 					//ten = 0;
 					////mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, absx, absy, 0, 0 );
@@ -277,13 +277,13 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
 
 					measurement << (float)absx, (float)absy;
 
-					// 运行卡尔曼滤波器
+					// run Kalman filter
 					for(int j=0;j<100;j++){
 						kalmanFilterPredict();
 						kalmanFilterUpdate(measurement);
 					}
 
-					 //输出滤波结果
+					 // ouput Kalman filter result to the mouse coordinate
 					mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, (int)x(0), (int)x(1), 0, 0 );
 					//mouse_event(MOUSEEVENTF_ABSOLUTE | MOUSEEVENTF_MOVE, absx, absy, 0, 0 );
 				}
@@ -295,16 +295,16 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
         return;
     WCHAR result[60];
     HandState righHandState = HandState_Unknown;
-    HRESULT hr = pBody->get_HandRightState(&righHandState);// 获取右手状态
+    HRESULT hr = pBody->get_HandRightState(&righHandState);// Get right hand state
     if (SUCCEEDED(hr)) 
     {
-        StringCchPrintf(result, _countof(result), L"状态：%s\t", (righHandState == HandState_Open? L"打开" : L"握拳")); // 只判断2种
+        StringCchPrintf(result, _countof(result), L"state：%s\t", (righHandState == HandState_Open? L"open" : L"fist")); // 只判断2种
         SetDlgItemText(hGlobalHwnd, IDC_RIGHT_HAND, result);
 		if(lf_flag==1*lf_flag1==1){
-			//判断是否按下左键
+			// Determine if the right hand is fisting
 			Flag1 = righHandState == HandState_Open? 0:1;
 			if (Flag1!=Flag2){
-				////根据第一个flag是否为1进行“左键按下”或“左键抬起”操作
+				//// Perform the "Left down" or "Left up" operation based on whether the Flag1 is 1
 				if(Flag1!=1){
 					mouse_event(MOUSEEVENTF_LEFTUP,0,0,0,0);
 				}
@@ -312,9 +312,9 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
 					mouse_event(MOUSEEVENTF_LEFTDOWN,0,0,0,0);
 				}
 
-				Flag2 = Flag1;//前后flag赋值
+				Flag2 = Flag1;//Assign Flag1's vlaue to Flag2
 			}
-			////用中间手势判断是否按下右键：一般用处不大，就没添加
+			//// Use the middle gesture to determine whether to press the right button: it is generally not very useful, so it was not added
 			//lassoflag1 = righHandState == HandState_Lasso? 0:1;
 			//if (lassoflag1!=lassoflag2){
 			//	if(lassoflag1){
@@ -329,12 +329,12 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
 		
     }
     HandState leftHandState = HandState_Unknown;
-    hr = pBody->get_HandLeftState(&leftHandState); // 获取左手状态
+    hr = pBody->get_HandLeftState(&leftHandState); // Get left hand state
     if (SUCCEEDED(hr)) 
     {
-        StringCchPrintf(result, _countof(result), L"状态：%s\t", (leftHandState == HandState_Open? L"打开" : L"握拳"));
+        StringCchPrintf(result, _countof(result), L"state：%s\t", (leftHandState == HandState_Open? L"open" : L"fist"));
         SetDlgItemText(hGlobalHwnd, IDC_LEFT_HAND, result);
-		//判断左手是否握拳
+		// Determine if the left hand is fisting
 		if(lf_flag1==1){
 			lf_flag = leftHandState == HandState_Closed? 1:0;}
 		 }
@@ -342,7 +342,7 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
 			lf_flag = 0;
 		}
 
-    // 识别手势
+    // Recognizing gestures
     if (pGestureDetection)
     {
         Joint joints[JointType_Count];
@@ -351,7 +351,7 @@ void HandleBodyFrame(IBody** ppBodies, int bodyCount)
     }
 }
 
-//键盘
+//air keyboard
 string morse_base[26] = {"01","1000","1010","100","0","0010","110","0000","00","0111","101","0100","11","10","111","0110","1101","010","000","1","001","0001","011","1001","1011","1100"};
 int mosi(string char_input){
 for(int i=0; i<26; i++){
@@ -367,7 +367,7 @@ void WINAPI OnGestureRecognized(GestureType type)
 		switch (type)
 		{
 		case GestureType::SwipeRight:
-			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"向右摆手");
+			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"SwipeRight");
 			/*keybd_event(68,0,0,0);
 			keybd_event(68,0,KEYEVENTF_KEYUP,0);*/
 			morse[i] = '0';
@@ -375,7 +375,7 @@ void WINAPI OnGestureRecognized(GestureType type)
 			i++;
 			break;
 		case GestureType::SwipeLeft:
-			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"向左摆手");
+			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"SwipeLeft");
 			/*keybd_event(65,0,0,0);
 			keybd_event(65,0,KEYEVENTF_KEYUP,0);*/
 			morse[i] = '1';
@@ -383,7 +383,7 @@ void WINAPI OnGestureRecognized(GestureType type)
 			i++;
 			break;
 		case GestureType::SwipeUp:
-			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"向上摆手");
+			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"SwipeUp");
 			/*keybd_event(87,0,0,0);
 			keybd_event(87,0,KEYEVENTF_KEYUP,0);*/
 			morse[i] = '\0';
@@ -391,7 +391,7 @@ void WINAPI OnGestureRecognized(GestureType type)
 			i++;
 			break;
 		case GestureType::SwipeDown:
-			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"向下摆手");
+			SetDlgItemText(hGlobalHwnd, IDC_GESTURE, L"SwipeDown");
 			/*keybd_event(83,0,0,0);
 			keybd_event(83,0,KEYEVENTF_KEYUP,0);*/
 			break;

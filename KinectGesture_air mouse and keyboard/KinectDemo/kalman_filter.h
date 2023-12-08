@@ -1,76 +1,76 @@
 #include "stdafx.h"
-#include "Eigen/Dense"  // 使用Eigen库进行矩阵运算
+#include "Eigen/Dense"  // Using the "Eigen" library for matrix operations
 
 using namespace Eigen;
 
-// 卡尔曼滤波器参数
-const double dt = 1/30;       // 时间步长
-const double acceleration_variance = 10.0;  // 过程噪声协方差
-const double measurement_variance = 10.0;   // 测量噪声协方差
+// Kalman filter parameters
+const double dt = 1/30;       // Time step
+const double acceleration_variance = 10.0;  // Process noise covariance
+const double measurement_variance = 10.0;   // Measurement noise covariance
 
-// 卡尔曼滤波器状态变量
-MatrixXf x(4, 1); // 状态向量，表示(px, py, vx, vy)
-MatrixXf P(4, 4); // 状态协方差矩阵
-MatrixXf F(4, 4); // 状态转移矩阵
-MatrixXf Q(4, 4); // 过程噪声协方差矩阵
-MatrixXf R(2, 2); // 测量噪声协方差矩阵
-MatrixXf H(2, 4); // 测量矩阵
+// Kalman filter state variable
+MatrixXf x(4, 1); // State vector, representing(px, py, vx, vy)
+MatrixXf P(4, 4); // State Covariance matrix
+MatrixXf F(4, 4); // State Transition Matrix
+MatrixXf Q(4, 4); // Process noise covariance matrix
+MatrixXf R(2, 2); // Measurement noise covariance matrix
+MatrixXf H(2, 4); // Measurement matrix
 
-//输入测量值
+// Measurement Vector
 MatrixXf measurement(2, 1);
 
-// 初始化卡尔曼滤波器
+// Initialize Kalman filter
 void initializeKalmanFilter()
 {
-    // 初始状态向量 x(k)
+    // Initialize State vector x(k)
     x << 0, 0, 0, 0;
 
-    // 初始状态协方差矩阵 P(k)
+    // Initialize State Covariance matrix P(k)
     P << 100, 0, 0, 0,
          0, 100, 0, 0,
          0, 0, 100, 0,
          0, 0, 0, 100;
 
-    // 状态转移矩阵 F
+    // Initialize State Transition Matrix F
     F << 1, 0, dt, 0,
          0, 1, 0, dt,
          0, 0, 1, 0,
          0, 0, 0, 1;
 
-    // 过程噪声协方差矩阵 Q
+    // Initialize Process noise covariance matrix Q
     Q << pow(dt, 4) / 4 * acceleration_variance, 0, pow(dt, 3) / 2 * acceleration_variance, 0,
          0, pow(dt, 4) / 4 * acceleration_variance, 0, pow(dt, 3) / 2 * acceleration_variance,
          pow(dt, 3) / 2 * acceleration_variance, 0, pow(dt, 2) * acceleration_variance, 0,
          0, pow(dt, 3) / 2 * acceleration_variance, 0, pow(dt, 2) * acceleration_variance;
 
-    // 测量噪声协方差矩阵 R
+    // Initialize Measurement noise covariance matrix R
     R << measurement_variance, 0,
          0, measurement_variance;
 
-    // 测量矩阵 H
+    // Initialize Measurement matrix H
     H << 1, 0, 0, 0,
          0, 1, 0, 0;
 }
 
-// 卡尔曼滤波器预测步骤
+// Kalman filter prediction steps
 void kalmanFilterPredict()
 {
-    // 预测状态向量 x(k)
+    // Predict state vectors x(k)
     x = F * x;
 
-    // 预测状态协方差矩阵 P(k)
+    // Predict state covariance matrix P(k)
     P = F * P * F.transpose() + Q;
 }
 
-// 卡尔曼滤波器更新步骤
+// Kalman filter updating steps
 void kalmanFilterUpdate(const MatrixXf& measurement)
 {
-    // 计算卡尔曼增益 K(k)
+    // Calculate Kalman gain K(k)
     MatrixXf K = P * H.transpose() * (H * P * H.transpose() + R).inverse();
 
-    // 更新状态向量 x(k)
+    // Update State vector x(k)
     x = x + K * (measurement - H * x);
 
-    // 更新状态协方差矩阵 P(k)
+    // Update State Covariance matrix P(k)
     P = (MatrixXf::Identity(4, 4) - K * H) * P;
 }
