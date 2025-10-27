@@ -2,7 +2,7 @@
 
 
 ## **brief introduction**:
-Course Design for Intelligent Robotics（智能机器人课设）
+Course Design for Intelligent Robotics（智能机器人课程设计）
 We have completed three functions, namely: **motion detection analog keyboard AWSD input**, **air mouse**, and **air keyboard**. We merged the mouse and keyboard into an air keyboard and mouse system, which switches by detecting whether the left hand is clenched and raised over the left shoulder (left hand. X<left shoulder. X&&left hand Y>left shoulder. Y), and when the left hand is clenched and raised over the left shoulder, it switches to mouse control; Switch from left key down to keyboard control when clenching (releasing) with the left hand.
 
 ## The following are two compressed file source codes:
